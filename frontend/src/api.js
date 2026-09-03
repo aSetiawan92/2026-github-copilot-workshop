@@ -63,4 +63,15 @@ export const api = {
       method: 'POST',
     }),
   getPurchaseOrderOpenLines: (id) => apiFetch(`/api/purchase-orders/${id}/open-lines`),
+  listGoodsReceipts: () => apiFetch('/api/goods-receipts'),
+  listBookmarks: () => apiFetch('/api/bookmarks'),
+  addBookmark: (payload) =>
+    apiFetch('/api/bookmarks', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  removeBookmark: (itemType, itemId) =>
+    apiFetch(`/api/bookmarks/${encodeURIComponent(itemType)}/${encodeURIComponent(itemId)}`, {
+      method: 'DELETE',
+    }),
 };

@@ -4,11 +4,10 @@
       <div class="page-header-left">
         <RouterLink to="/" class="back-btn" title="Back to Dashboard">&#8592;</RouterLink>
         <div>
-          <h2>Purchase Orders</h2>
-          <p class="muted">All purchase order records</p>
+          <h2>Goods Receipts</h2>
+          <p class="muted">All goods receipt records</p>
         </div>
       </div>
-      <RouterLink class="btn btn-outline" to="/purchase-orders/new">+ New PO</RouterLink>
     </div>
 
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
@@ -17,21 +16,23 @@
       <table>
         <thead>
           <tr>
+            <th>GR Number</th>
             <th>PO Number</th>
             <th>Vendor</th>
             <th>Status</th>
-            <th>Created</th>
+            <th>Receipt Date</th>
             <th>Bookmark</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in items" :key="item.id">
-            <td><RouterLink :to="`/purchase-orders/${item.id}`">{{ item.poNumber }}</RouterLink></td>
+            <td>{{ item.grNumber }}</td>
+            <td>{{ item.poNumber }}</td>
             <td>{{ item.vendorName }}</td>
             <td>
               <span class="status-badge" :class="item.status.toLowerCase()">{{ item.status }}</span>
             </td>
-            <td>{{ item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-' }}</td>
+            <td>{{ item.receiptDate || '-' }}</td>
             <td>
               <button
                 type="button"
@@ -61,7 +62,7 @@ const bookmarkKeys = ref(new Set());
 const pendingKeys = ref(new Set());
 
 function bookmarkKey(itemId) {
-  return `PO:${itemId}`;
+  return `GR:${itemId}`;
 }
 
 function isBookmarked(itemId) {
@@ -101,10 +102,10 @@ async function toggleBookmark(itemId) {
 
   try {
     if (bookmarked) {
-      await api.removeBookmark('PO', itemId);
+      await api.removeBookmark('GR', itemId);
       setBookmarked(itemId, false);
     } else {
-      await api.addBookmark({ itemType: 'PO', itemId });
+      await api.addBookmark({ itemType: 'GR', itemId });
       setBookmarked(itemId, true);
     }
   } catch (error) {
@@ -116,11 +117,12 @@ async function toggleBookmark(itemId) {
 
 onMounted(async () => {
   try {
-    const [purchaseOrdersPayload, bookmarksPayload] = await Promise.all([
-      api.listPurchaseOrders(),
+    const [goodsReceiptsPayload, bookmarksPayload] = await Promise.all([
+      api.listGoodsReceipts(),
       api.listBookmarks(),
     ]);
-    items.value = purchaseOrdersPayload.items;
+
+    items.value = goodsReceiptsPayload.items;
     bookmarkKeys.value = new Set(
       (bookmarksPayload.items || []).map((bookmark) => `${bookmark.itemType}:${bookmark.itemId}`)
     );

@@ -44,4 +44,43 @@ describe('purchase order api helpers', () => {
       expect.objectContaining({ method: 'POST' })
     );
   });
+
+  test('addBookmark posts payload to bookmarks endpoint', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: async () => ({ itemType: 'PR', itemId: 'pr-1' }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const payload = { itemType: 'PR', itemId: 'pr-1' };
+    const result = await api.addBookmark(payload);
+
+    expect(result).toEqual({ itemType: 'PR', itemId: 'pr-1' });
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:3000/api/bookmarks',
+      expect.objectContaining({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+    );
+  });
+
+  test('removeBookmark uses delete endpoint', async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: async () => ({ removed: true }),
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await api.removeBookmark('PO', 'po-1');
+
+    expect(result).toEqual({ removed: true });
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://localhost:3000/api/bookmarks/PO/po-1',
+      expect.objectContaining({ method: 'DELETE' })
+    );
+  });
 });
