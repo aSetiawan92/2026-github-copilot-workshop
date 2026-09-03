@@ -12,6 +12,13 @@
       <div class="btn-group" v-if="requisition">
         <button v-if="requisition.status === 'DRAFT'" class="btn btn-primary" @click="submitRequisition">Submit PR</button>
         <button v-if="requisition.status === 'SUBMITTED'" class="btn btn-primary" @click="approveRequisition">Approve PR</button>
+        <RouterLink
+          v-if="requisition.status === 'APPROVED'"
+          class="btn btn-outline"
+          :to="`/purchase-orders/new?requisitionId=${requisition.id}`"
+        >
+          Create PO
+        </RouterLink>
       </div>
     </div>
 
