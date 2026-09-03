@@ -6,6 +6,8 @@
         <RouterLink to="/" :class="{ active: isDashboard }">Dashboard</RouterLink>
         <RouterLink to="/requisitions" :class="{ active: isRequisitions }">Purchase Requisitions</RouterLink>
         <RouterLink to="/purchase-orders" :class="{ active: isPurchaseOrders }">Purchase Orders</RouterLink>
+        <RouterLink to="/goods-receipts" :class="{ active: isGoodsReceipts }">Goods Receipts</RouterLink>
+        <RouterLink to="/bookmarks" :class="{ active: isBookmarks }">Bookmarks</RouterLink>
       </nav>
     </header>
 
@@ -23,4 +25,6 @@ const route = useRoute();
 const isDashboard = computed(() => route.path === '/');
 const isRequisitions = computed(() => route.path.startsWith('/requisitions'));
 const isPurchaseOrders = computed(() => route.path.startsWith('/purchase-orders'));
+const isGoodsReceipts = computed(() => route.path.startsWith('/goods-receipts'));
+const isBookmarks = computed(() => route.path.startsWith('/bookmarks'));
 </script>

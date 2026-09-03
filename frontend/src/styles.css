@@ -333,6 +333,28 @@ td a {
 .status-badge.draft { background: #f3f3f3; color: #888; }
 .status-badge.submitted { background: #fff3e0; color: #e65100; }
 .status-badge.approved { background: #e8f5e9; color: #2e7d32; }
+.status-badge.posted { background: #e3f2fd; color: #1565c0; }
+
+.btn-bookmark {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: var(--white);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.btn-bookmark.bookmarked {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-bookmark:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
 
 /* ===== Utility ===== */
 .muted { color: var(--text-muted); font-size: 13px; }
